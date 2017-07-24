@@ -32,15 +32,6 @@ var testDoc = {
 
 describe('rental-controller', () => {
 
-
-	// before((done) => { 
-	// 	rentalController.delete(testDoc.id, (error, response) => { 
-	// 		console.log('rentalController remove response: ' + response);
-
-	// 		done();         
-	// 	});     
- //    });
-
 	it('should be able to create/index a new rental document', (done) => {
       
 		rentalController.create(testDoc,(error, response)=>{
@@ -49,6 +40,18 @@ describe('rental-controller', () => {
 			}
 			//console.log('new rental create response:' + JSON.stringify(response,null,4));
 			response._id.should.equal("testDocId");
+			done();
+		});
+    });
+
+    it('should be able to gracesully handle the case when a document already exists in the index', (done) => {
+      
+		rentalController.create(testDoc,(error, response)=>{
+			if(error){
+				throw Error(error);
+			}
+			// console.log('duplicate rental create response:' + JSON.stringify(response,null,4));
+			response.should.equal("document already exists");
 			done();
 		});
     });

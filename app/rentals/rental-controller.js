@@ -19,7 +19,20 @@ class RentalController{
 		  body: newRental
 		}
 
-		this.esClient.create(params, callback);
+		this.esClient.create(params, (error, response)=>{
+
+			if(error){
+				// console.log('document create error: ' +error);
+				var str = "version conflict, document already exists";
+
+				if(JSON.stringify(error).indexOf(str) !== -1){
+					response = "document already exists";
+					error = null;
+				}
+			}
+
+			callback(error, response)
+		});
 	}
 
 	delete(documentId, callback){

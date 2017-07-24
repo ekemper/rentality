@@ -28,6 +28,8 @@ router.get('/', function(req, res) {
 	res.json({ message: 'you have been routed to the root route. they are coming to get you!' });	
 });
 
+//router.get('/')
+
 app.use('/', router);
 app.listen(port);
 console.log('Magic happens on port ' + port);

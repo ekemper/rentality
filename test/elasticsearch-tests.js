@@ -3,7 +3,8 @@ process.env.NODE_ENV = 'test';
 
 let chai = require('chai');
 let should = chai.should();
-let expect = require('chai').expect
+let expect = require('chai').expect;
+
 var elasticsearch = require('elasticsearch');
 esClient = new elasticsearch.Client({
       host: 'localhost:9200',
@@ -24,7 +25,7 @@ describe('elastic search', () => {
         index:'rentals'
       };
       esClient.indices.exists(params).then((response)=>{
-        console.log('response :' + response);
+        response.should.equal(true);
         done();
       }, (error)=>{throw Error(error)});
     });

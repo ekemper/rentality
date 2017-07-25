@@ -44,7 +44,7 @@ describe('rental-controller', () => {
 		});
     });
 
-    it('should be able to gracesully handle the case when a document already exists in the index', (done) => {
+    it('should be able to gracefully handle the case when a document already exists in the index', (done) => {
       
 		rentalController.create(testDoc,(error, response)=>{
 			if(error){

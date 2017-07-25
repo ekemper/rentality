@@ -3,15 +3,12 @@ var rp = require('request-promise');
 var cheerio = require('cheerio');
 
 class PostParser {
-	constructor(url){
-		this.url = url;
-		this.rentalPostData = {};
-	}
+	constructor(){}
 
-	getRawHtml(callback){
+	getRawHtml(url, callback){
 
 		var options = {
-		    uri: this.url,
+		    uri: url,
 		    transform:(body)=>{
 		        return cheerio.load(body);
 		    }
@@ -26,13 +23,13 @@ class PostParser {
 		    });
 	}
 
-	parse(callback){
+	parse(url, callback){
 
-		this.getRawHtml(($)=>{
+		this.getRawHtml(url, ($)=>{
 
-			this.rentalPostData = {
-		    	url: this.url,
-		    	id: this.getPostIdFromUrl(this.url),
+			var rentalPostData = {
+		    	url: url,
+		    	id: this.getPostIdFromUrl(url),
 		    	price:$('.price').html(),
 		        title:$("#titletextonly").text(),
 		        images:[],
@@ -45,7 +42,7 @@ class PostParser {
 
 		    	var imgSrc = $(elem).attr('href');
 
-		        this.rentalPostData.images.push( imgSrc ) ;
+		        rentalPostData.images.push( imgSrc ) ;
 		    })
 
 		    $('.attrgroup').children().each((index, elem)=>{
@@ -54,12 +51,12 @@ class PostParser {
 
 		        if(text.length>0){
 
-		            this.rentalPostData.attributes.push( text ) ;                    
+		            rentalPostData.attributes.push( text ) ;                    
 		        }
 		    })
 
-			callback(this.rentalPostData);
-		})
+			callback(rentalPostData);
+		});
 	}
 
 
@@ -76,4 +73,4 @@ class PostParser {
 
 }
 
-module.exports = PostParser;
+module.exports = new PostParser();

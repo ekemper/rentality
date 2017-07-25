@@ -18,7 +18,7 @@ if(process.env.NODE_ENV !== 'test') {
 }
 
 //------------------------------------------------------------
-tenMinutes = 60 * 1000 /** 10*/;
+tenMinutes = 60 * 1000 * 10;
 
 setInterval(()=>{
 	rentalController.updateIndex((newRentals)=>{

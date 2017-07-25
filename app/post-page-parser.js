@@ -35,7 +35,9 @@ class PostParser {
 		        images:[],
 		        body:$("#postingbody").text(),
 		        attributes:[],
-		        crawldate: Date.now()
+		        crawldate: Date.now(),
+		        latitude: $('#map').attr('data-latitude'),
+		        longitude: $('#map').attr('data-longitude')
 		    };
 
 		    $('#thumbs').children().each((index, elem)=>{

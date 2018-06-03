@@ -7,12 +7,12 @@ let assert = chai.assert;
 
 let PostParser = require('../app/post-page-parser.js');
 let testPostUrl = 'http://flagstaff.craigslist.org/apa/6217100852.html';
-let parser = new PostParser(testPostUrl);
+//let parser = new PostParser(testPostUrl);
 
 describe('post-page-parser', () => {
 	it('should extract post data (json) for a given a url', (done) => {
-      
-		parser.parse((rentalPostData)=>{
+
+		PostParser.parse((rentalPostData)=>{
 			// console.log('rentalPostData : ' + JSON.stringify(rentalPostData,null,4));
 
 			assert.exists(rentalPostData.url, 'url is neither `null` nor `undefined`');

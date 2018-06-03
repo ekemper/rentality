@@ -6,7 +6,7 @@
     "url": "git@github.com:ekemper/rentality.git"
   },
   "scripts": {
-    "start": "SET NODE_ENV=dev && node server.js",
+    "start": "NODE_ENV=dev && node server.js",
     "test": "mocha --timeout 10000"
   },
   "author": "ek",
@@ -14,21 +14,24 @@
   "dependencies": {
     "body-parser": "~1.0.1",
     "cheerio": "^1.0.0-rc.2",
-    "elasticsearch": "^13.2.0",
+    "elasticsearch": "^13.3.1",
     "express": "~4.0.0",
     "jsonfile": "^2.4.0",
     "morgan": "~1.0.0",
-    "request": "^2.81.0",
-    "request-promise": "^4.2.1",
-    "rss-to-json": "^1.0.2",
-    "xml2json": "^0.11.0"
+    "nodemon": "^1.17.5",
+    "npm": "^6.1.0",
+    "request": "^2.87.0",
+    "request-promise": "^4.2.2",
+    "rss-to-json": "^1.0.4",
+    "xml2json": "^0.11.2"
   },
   "devDependencies": {
-    "chai": "^4.0.2",
+    "chai": "^4.1.2",
     "chai-http": "^3.0.0",
-    "gulp": "^3.9.1",
+    "gulp": "github:gulpjs/gulp#4.0",
+    "gulp-nodemon": "^2.2.1",
     "gulp-run": "^1.7.1",
     "gulp-util": "^3.0.8",
-    "mocha": "^3.4.2"
+    "mocha": "^3.5.3"
   }
 }

@@ -4,7 +4,7 @@ var rp = require('request-promise');
 var xmlParser = require('xml2json');
 class RssReader{
 	constructor(){
-		this.baseUrl = 'https://flagstaff.craigslist.org/search/apa?format=rss';
+		this.baseUrl = 'https://boulder.craigslist.org/search/apa?format=rss';
 	}
 
 	getLatestFromFeed(callback){
@@ -29,7 +29,7 @@ class RssReader{
 	}
 
 	handleNewFeed(items){
-		console.log('items: ' + JSON.stringify(items,null,4));
+		console.log('items.length: ' + items.length);
 	}
 
 	handleError(err){

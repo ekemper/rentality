@@ -2,11 +2,10 @@
 let rssReader = require('../rss-reader.js');
 let postParser = require('../post-page-parser.js');
 
-
 var elasticSearch = require('elasticSearch');
 var esClient = new elasticSearch.Client({
       host: 'localhost:9200',
-      log: 'trace'
+      log: 'error'
     });
 
 class RentalController{
@@ -22,11 +21,12 @@ class RentalController{
 
 		var url = this.postPageQueue.pop()["rdf:resource"];
 
+		// we put this in a set timeout to avoid hitting craigslist too hard
 		setTimeout(()=>{
 
 			postParser.parse(url, (postPageData)=>{
 
-				this.newDocs.push(postPageData); 
+				this.newDocs.push(postPageData);
 
 				this.create(postPageData, (error, response)=>{
 
@@ -39,13 +39,13 @@ class RentalController{
 						this.synchronousScrape();
 
 					} else {
-						console.log('all done!');
+						console.log('all done! : ' + Date.now());
 						this.updateIndexCallback(this.newDocs);
 					}
 				});
 			});
 
-		},500); 
+		},500);
 	}
 
 	updateIndex(callback){
@@ -54,6 +54,9 @@ class RentalController{
 
 		rssReader.getLatestFromFeed((items)=>{
 			this.postPageQueue = items;
+
+			// once we have the latest post urls from
+			// the rss feed, go scrape the pages
 			this.synchronousScrape();
 		});
 	}
@@ -67,16 +70,14 @@ class RentalController{
 		  body: newRental
 		}
 
-		this.esClient.create(params, (error, response)=>{
+		this.esClient.create(params, (error, response) => {
 
-			if(error){
-				// console.log('document create error: ' +error);
-				var str = "version conflict, document already exists";
+			const str = "version conflict, document already exists";
+			const documentExistsAlready = JSON.stringify(error).indexOf(str) !== -1;
 
-				if(JSON.stringify(error).indexOf(str) !== -1){
-					response = "document already exists";
-					error = null;
-				}
+			if(error && documentExistsAlready){
+				response = "document already exists";
+				error = null;
 			}
 
 			callback(error, response);
@@ -91,6 +92,21 @@ class RentalController{
 		}
 
 		this.esClient.delete(params, callback);
+	}
+
+	getAllRentals(callback){
+
+		this.esClient.search({
+		  index: 'rentals'
+		  /*q: query*/
+		}, (error, response)=>{
+
+			if(error){
+				throw new Error(error);
+			}
+
+			callback(response);
+		});
 	}
 }
 

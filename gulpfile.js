@@ -11,7 +11,7 @@ var gulp  = require('gulp'),
 gulp.task('default', function() {
 	gulp.watch(
 		['*.js', 'front-end/*'],
-		gulp.series('run tests', 'build vue', 'restart node server', function(done) {
+		gulp.series('build vue', 'restart node server', function(done) {
 			console.log('\n\nbuild chain done!');
 			done();
 		})

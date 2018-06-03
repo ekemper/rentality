@@ -1,14 +1,15 @@
 'use-strict'
+
 var rp = require('request-promise');
-// var Feed = require('rss-to-json');
 var xmlParser = require('xml2json');
+
 class RssReader{
-	constructor(){
-		this.baseUrl = 'https://boulder.craigslist.org/search/apa?format=rss';
+	constructor(baseUrl){
+		this.baseUrl = baseUrl;
 	}
 
 	getLatestFromFeed(callback){
- 
+
 		var options = {
 		    uri: this.baseUrl,
 		    qs: {},
@@ -24,8 +25,6 @@ class RssReader{
 		};
 
 		rp(options).then(callback).catch(this.handleError);
-
-
 	}
 
 	handleNewFeed(items){
@@ -37,4 +36,4 @@ class RssReader{
 	}
 }
 
-module.exports = new RssReader();
+module.exports = RssReader;

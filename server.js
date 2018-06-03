@@ -4,8 +4,6 @@ var app = express();
 var morgan = require('morgan');
 var bodyParser = require('body-parser');
 
-let rentalController = require('./app/rentals/rental-controller.js');
-
 app.use(morgan('dev')); // log requests to the console
 
 // Add headers
@@ -37,55 +35,11 @@ if(process.env.NODE_ENV !== 'test') {
     app.use(morgan('combined')); //'combined' outputs the Apache style LOGs
 }
 
-//------------------------------------------------------------
-//tenMinutes = 60 * 1000 * 10;
-const tenSecconds = 10000;
-
-// setInterval(()=>{
-
-// 	rentalController.updateIndex((newRentals)=>{
-// 		console.log('scraped for new rentals, count: ' + newRentals.length);
-// 	});
-
-// },tenSecconds);
-
-//------------------------------------------------------------
-
-var port = process.env.PORT || 2222;
-var router = express.Router();
-
-// router.use(function(req, res, next) {
-// 	next();
-// });
-
-//------------------------------------------------------------
-router.get('/', function(req, res) {
-	res.json({ message: 'you have been routed to the root route. they are coming to get you!' });
-});
-
-router.get('/update-rental-index', function(req, res){
-	rentalController.updateIndex( newRentals => {
-
-	    res.json({
-	    	message: "update-rental-index success",
-	    	newRentals: newRentals
-	    });
-
-	});
-});
-
-router.get('/rentals', (req, res)=>{
-	rentalController.getAllRentals((rentals)=>{
-		res.json(rentals);
-	});
-});
-
-router.get('/stats', (req, res) => {
-    res.sendfile('./index.html');
-});
+const port = process.env.PORT || 2222;
+const router = require('./routes');
 
 app.use('/', router);
 app.listen(port);
 console.log('Magic happens on port ' + port);
 
-module.exports = app; //for testing
+module.exports = app;

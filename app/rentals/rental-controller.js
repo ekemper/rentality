@@ -1,9 +1,13 @@
 'use strict'
-let rssReader = require('../rss-reader.js');
-let postParser = require('../post-page-parser.js');
 
-var elasticSearch = require('elasticSearch');
-var esClient = new elasticSearch.Client({
+const RssReader = require('../rss-reader.js');
+const baseUrl = 'https://boulder.craigslist.org/search/apa?format=rss';
+const rssReader = new RssReader(baseUrl);
+
+const postParser = require('../post-page-parser.js');
+
+const elasticSearch = require('elasticSearch');
+const esClient = new elasticSearch.Client({
       host: 'localhost:9200',
       log: 'error'
     });

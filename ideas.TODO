@@ -1,12 +1,17 @@
 
 
+ ☐ get the tests working:
+   ☐ each socket endpoint
+   ☐ test for server.js to create socket connection
 
+ ☐ define the real time arch
 
- ☐ define the real time arch @created(18-06-03 14:46)
+ ☐ switch the api endpoints to socket io logic
 
- ☐ switch the api endpoints to socket io logic @created(18-06-03 14:47)
+ ☐ finish the build chain for heroku
 
- ☐ finish the build chain for heroku @created(18-06-03 14:46)
+ ☐ is gulp just a mess? is it needed?
 
- ☐ is gulp just a mess? @created(18-06-03 14:48)
+ ☐ create a crawler controller that will expose functionallity for when to gather and index
 
+ ☐ crawler controller endpoints or socket connection for starting, stopping, and setting the crawing interval

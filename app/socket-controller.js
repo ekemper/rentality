@@ -21,7 +21,7 @@ class SocketController {
 		//this.registerListeners();
 
 		rentalController.getAllRentals( response => {
-			socket.emit('data', {
+			socket.emit('rentalData', {
 				data: response
 			});
 		});

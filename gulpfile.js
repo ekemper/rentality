@@ -1,5 +1,6 @@
-var gulp  = require('gulp'),
-	run = require('gulp-run');
+
+let gulp = require('gulp');
+const run = require('gulp-run');
 
 
 

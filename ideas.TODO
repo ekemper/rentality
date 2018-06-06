@@ -20,3 +20,5 @@
 
  ☐ need a process to clear out old posts from the index
    on an interval, hit the post url. if 404 then delete...
+
+ ☐ create elastic search aggrigations for each chart. this way only the data that is needed for display is sent to the client.

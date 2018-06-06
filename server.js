@@ -1,9 +1,3 @@
-// var express = require('express');
-// var app = express();
-
-// var http = require('http').Server(app);
-// var io = require('socket.io')(http);
-
 
 var app = require('express')();
 var server = require('http').Server(app);
@@ -11,9 +5,11 @@ var io = require('socket.io')(server);
 
 server.listen(2222);
 
-
 var SocketController = require('./app/socket-controller.js');
 const socketController = new SocketController(io);
+
+var CrawlerController = require('./app/crawler-controller');
+const crawlerController = new CrawlerController(socketController);
 
 var morgan = require('morgan');
 var bodyParser = require('body-parser');
@@ -51,9 +47,8 @@ if(process.env.NODE_ENV !== 'test') {
 
 const port = process.env.PORT || 2222;
 const router = require('./routes');
-
 app.use('/', router);
-//app.listen(port, "127.0.0.1");
+
 console.log('Magic happens on port ' + port);
 
 module.exports = app;

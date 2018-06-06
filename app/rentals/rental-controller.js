@@ -17,10 +17,10 @@ class RentalController{
 		this.esClient = esClient;
 	    this.postPageQueue = [];
 	    this.newDocs = [];
+		this.existingDocErr = "version conflict, document already exists";
 	}
 
     //http://mikelam.azurewebsites.net/how-to-make-synchronous-http-requests-in-node-js/
-
 	synchronousScrape() {
 
 		var url = this.postPageQueue.pop()["rdf:resource"];
@@ -28,11 +28,11 @@ class RentalController{
 		// we put this in a set timeout to avoid hitting craigslist too hard
 		setTimeout(()=>{
 
-			postParser.parse(url, (postPageData)=>{
+			postParser.parse(url, (postPageData) => {
 
 				this.newDocs.push(postPageData);
 
-				this.create(postPageData, (error, response)=>{
+				this.create(postPageData, (error, response) => {
 
 					if(error){
 						throw Error(error);
@@ -56,7 +56,7 @@ class RentalController{
 
 		this.updateIndexCallback = callback;
 
-		rssReader.getLatestFromFeed((items)=>{
+		rssReader.getLatestFromFeed( items => {
 			this.postPageQueue = items;
 
 			// once we have the latest post urls from
@@ -65,7 +65,7 @@ class RentalController{
 		});
 	}
 
-	create(newRental, callback){
+	create(newRental, callback) {
 
 		let params = {
 		  index: 'rentals',
@@ -76,19 +76,20 @@ class RentalController{
 
 		this.esClient.create(params, (error, response) => {
 
-			const str = "version conflict, document already exists";
-			const documentExistsAlready = JSON.stringify(error).indexOf(str) !== -1;
+			if (error) {
+				const documentExistsAlready = JSON.stringify(error).indexOf(this.existingDocErr) !== -1;
 
-			if(error && documentExistsAlready){
-				response = "document already exists";
-				error = null;
+				if(documentExistsAlready){
+					response = "document already exists";
+					error = null;
+				}
 			}
 
 			callback(error, response);
 		});
 	}
 
-	delete(documentId, callback){
+	delete(documentId, callback) {
 		let params = {
 		  index: 'rentals',
 		  type: 'default',
@@ -98,7 +99,7 @@ class RentalController{
 		this.esClient.delete(params, callback);
 	}
 
-	getAllRentals(callback){
+	getAllRentals(callback) {
 
 		this.esClient.search({
 		  index: 'rentals'
@@ -111,6 +112,10 @@ class RentalController{
 
 			callback(response);
 		});
+	}
+
+	count(callback) {
+		this.esClient.
 	}
 }
 

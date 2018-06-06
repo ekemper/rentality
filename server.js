@@ -12,13 +12,13 @@ var io = require('socket.io')(server);
 server.listen(2222);
 
 
-var SocketController = require('./app/SocketController.js');
+var SocketController = require('./app/socket-controller.js');
 const socketController = new SocketController(io);
 
 var morgan = require('morgan');
 var bodyParser = require('body-parser');
 
-app.use(morgan('dev')); // log requests to the console
+app.use(morgan('dev'));
 
 // Add headers
 app.use(function (req, res, next) {

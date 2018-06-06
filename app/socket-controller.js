@@ -18,18 +18,23 @@ class SocketController {
 
 		console.log('on connect, socket.id', socket.id);
 
-		this.registerListeners();
+		//this.registerListeners();
 
-
-		socket.emit('news', { hello: 'world' });
-	}
-
-	registerListeners() {
-
-		socket.on('request data', (payload) => {
-			console.log(payload);
+		rentalController.getAllRentals( response => {
+			socket.emit('data', {
+				data: response
+			});
 		});
+
+
 	}
+
+	// registerListeners () {
+
+	// 	socket.on('request data', (payload) => {
+	// 		console.log(payload);
+	// 	});
+	// }
 
 }
 

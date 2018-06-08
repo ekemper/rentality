@@ -5,15 +5,13 @@ let should = chai.should();
 let expect = chai.expect;
 let assert = chai.assert;
 
-let PostParser = require('../app/post-page-parser.js');
-let testPostUrl = 'http://flagstaff.craigslist.org/apa/6217100852.html';
-//let parser = new PostParser(testPostUrl);
+let postParser = require('../app/post-page-parser.js');
+let testPostUrl = 'https://flagstaff.craigslist.org/apa/d/brand-new-renovation-house/6609763258.html';
 
 describe('post-page-parser', () => {
 	it('should extract post data (json) for a given a url', (done) => {
 
-		PostParser.parse((rentalPostData)=>{
-			// console.log('rentalPostData : ' + JSON.stringify(rentalPostData,null,4));
+		postParser.parse(testPostUrl, (rentalPostData)=>{
 
 			assert.exists(rentalPostData.url, 'url is neither `null` nor `undefined`');
 			assert.exists(rentalPostData.id, 'id is neither `null` nor `undefined`');

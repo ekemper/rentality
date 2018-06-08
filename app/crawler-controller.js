@@ -19,7 +19,7 @@ class CrawlerController {
 				});
 			});
 
-		},this.crawlInterval);
+		}, this.crawlInterval);
 	}
 }
 

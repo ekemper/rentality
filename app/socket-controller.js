@@ -20,11 +20,11 @@ class SocketController {
 
 		//this.registerListeners();
 
-		rentalController.getAllRentals( response => {
-			socket.emit('rentalData', {
-				data: response
-			});
-		});
+		// rentalController.getAllRentals( response => {
+		// 	socket.emit('rentalData', {
+		// 		data: response
+		// 	});
+		// });
 
 
 	}

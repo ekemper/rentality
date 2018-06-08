@@ -6,117 +6,114 @@ const rssReader = new RssReader(baseUrl);
 
 const postParser = require('../post-page-parser.js');
 
-const elasticSearch = require('elasticSearch');
-const esClient = new elasticSearch.Client({
-      host: 'localhost:9200',
-      log: 'error'
-    });
+// const elasticSearch = require('elasticSearch');
+// const esClient = new elasticSearch.Client({
+//       host: 'localhost:9200',
+//       log: 'error'
+//     });
 
 class RentalController{
 	constructor(){
-		this.esClient = esClient;
+		// this.esClient = esClient;
 	    this.postPageQueue = [];
 	    this.newDocs = [];
-		this.existingDocErr = "version conflict, document already exists";
+		// this.existingDocErr = "version conflict, document already exists";
+		this.updateAllRentals();
 	}
 
-    //http://mikelam.azurewebsites.net/how-to-make-synchronous-http-requests-in-node-js/
-	synchronousScrape() {
+	async gather() {
 
 		var url = this.postPageQueue.pop()["rdf:resource"];
 
 		// we put this in a set timeout to avoid hitting craigslist too hard
-		setTimeout(()=>{
+		setTimeout(() => {
 
-			postParser.parse(url, (postPageData) => {
+			postParser.parse(url).then( postPageData => {
+
+				console.log('postPageData', postPageData)
 
 				this.newDocs.push(postPageData);
 
-				this.create(postPageData, (error, response) => {
+				// this.create(postPageData, (error, response) => {
 
-					if(error){
-						throw Error(error);
-					}
+				// 	if(error){
+				// 		throw Error(error);
+				// 	}
 
-					if(this.postPageQueue.length){
+				if(this.postPageQueue.length){
 
-						this.synchronousScrape();
+					this.gather();
 
-					} else {
-						console.log('all done! : ' + Date.now());
-						this.updateIndexCallback(this.newDocs);
-					}
-				});
+				} else {
+					console.log('all done! : ' + Date.now());
+					console.log('this.newDocs', this.newDocs)
+					//this.updateIndexCallback(this.newDocs);
+				}
+				// });
 			});
 
 		},500);
 	}
 
-	updateIndex(callback){
+	async updateAllRentals() {
 
-		this.updateIndexCallback = callback;
-
-		rssReader.getLatestFromFeed( items => {
+		rssReader.getLatestFromFeed().then( items => {
 			this.postPageQueue = items;
 
 			// once we have the latest post urls from
 			// the rss feed, go scrape the pages
-			this.synchronousScrape();
+			this.gather();
 		});
 	}
 
-	create(newRental, callback) {
+	// create(newRental, callback) {
 
-		let params = {
-		  index: 'rentals',
-		  type: 'default',
-		  id: newRental.id,
-		  body: newRental
-		}
+	// 	let params = {
+	// 	  index: 'rentals',
+	// 	  type: 'default',
+	// 	  id: newRental.id,
+	// 	  body: newRental
+	// 	}
 
-		this.esClient.create(params, (error, response) => {
+	// 	this.esClient.create(params, (error, response) => {
 
-			if (error) {
-				const documentExistsAlready = JSON.stringify(error).indexOf(this.existingDocErr) !== -1;
+	// 		if (error) {
+	// 			const documentExistsAlready = JSON.stringify(error).indexOf(this.existingDocErr) !== -1;
 
-				if(documentExistsAlready){
-					response = "document already exists";
-					error = null;
-				}
-			}
+	// 			if(documentExistsAlready){
+	// 				response = "document already exists";
+	// 				error = null;
+	// 			}
+	// 		}
 
-			callback(error, response);
-		});
-	}
+	// 		callback(error, response);
+	// 	});
+	// }
 
-	delete(documentId, callback) {
-		let params = {
-		  index: 'rentals',
-		  type: 'default',
-		  id: documentId
-		}
+	// delete(documentId, callback) {
+	// 	let params = {
+	// 	  index: 'rentals',
+	// 	  type: 'default',
+	// 	  id: documentId
+	// 	}
 
-		this.esClient.delete(params, callback);
-	}
+	// 	this.esClient.delete(params, callback);
+	// }
 
-	getAllRentals(callback) {
+	// getAllRentals(callback) {
 
-		this.esClient.search({
-		  index: 'rentals'
-		  /*q: query*/
-		}, (error, response)=>{
+	// 	this.esClient.search({
+	// 	  index: 'rentals'
+	// 	  /*q: query*/
+	// 	}, (error, response)=>{
 
-			if(error){
-				throw new Error(error);
-			}
+	// 		if(error){
+	// 			throw new Error(error);
+	// 		}
 
-			callback(response);
-		});
-	}
-
-	count(callback) {
-		this.esClient.
-	}
+	// 		callback(response);
+	// 	});
+	// }
 }
 
 

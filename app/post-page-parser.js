@@ -23,7 +23,7 @@ class PostParser {
 		    });
 	}
 
-	parse(url, callback){
+	async parse(url){
 
 		this.getRawHtml(url, ($)=>{
 
@@ -53,11 +53,11 @@ class PostParser {
 
 		        if(text.length>0){
 
-		            rentalPostData.attributes.push( text ) ;                    
+		            rentalPostData.attributes.push( text ) ;
 		        }
 		    })
 
-			callback(rentalPostData);
+			return rentalPostData;
 		});
 	}
 

@@ -66,29 +66,29 @@ class RentalController{
 		});
 	}
 
-	// create(newRental, callback) {
+	create(newRental, callback) {
 
-	// 	let params = {
-	// 	  index: 'rentals',
-	// 	  type: 'default',
-	// 	  id: newRental.id,
-	// 	  body: newRental
-	// 	}
+		let params = {
+		  index: 'rentals',
+		  type: 'default',
+		  id: newRental.id,
+		  body: newRental
+		}
 
-	// 	this.esClient.create(params, (error, response) => {
+		this.esClient.create(params, (error, response) => {
 
-	// 		if (error) {
-	// 			const documentExistsAlready = JSON.stringify(error).indexOf(this.existingDocErr) !== -1;
+			if (error) {
+				const documentExistsAlready = JSON.stringify(error).indexOf(this.existingDocErr) !== -1;
 
-	// 			if(documentExistsAlready){
-	// 				response = "document already exists";
-	// 				error = null;
-	// 			}
-	// 		}
+				if(documentExistsAlready){
+					response = "document already exists";
+					error = null;
+				}
+			}
 
-	// 		callback(error, response);
-	// 	});
-	// }
+			callback(error, response);
+		});
+	}
 
 	// delete(documentId, callback) {
 	// 	let params = {
